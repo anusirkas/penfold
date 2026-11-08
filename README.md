@@ -38,6 +38,13 @@ npm install
 
 ### 2. Create and seed the database
 
+Create your local environment file:
+
+```
+cp .env.example .env
+```
+
+
 Run the following command to create your SQLite database file. This also creates the `User` and `Post` tables that are defined in [`prisma/schema.prisma`](./prisma/schema.prisma):
 
 ```
