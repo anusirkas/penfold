@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -22,6 +22,7 @@ model Post {
   content   String?
   published Boolean  @default(false)
   viewCount Int      @default(0)
+  archivedAt DateTime?
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int?
 }

@@ -28,7 +28,7 @@ const Blog: React.FC<Props> = (props) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const feed = await prisma.post.findMany({
-    where: { published: true },
+    where: { published: true, archivedAt: null },
     include: { author: true },
   })
   return {

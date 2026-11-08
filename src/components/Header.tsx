@@ -19,6 +19,9 @@ const Header: React.FC = () => {
         <Link href="/drafts" legacyBehavior>
           <a data-active={isActive('/drafts')}>Drafts</a>
         </Link>
+        <Link href="/archived" legacyBehavior>
+          <a data-active={isActive('/archived')}>Archived</a>
+        </Link>
       </div>
       <div className={styles.right}>
         <Link href="/signup" legacyBehavior>
