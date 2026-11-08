@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import prisma from '../src/lib/prisma'
 import { recordPostView } from '../src/lib/recordPostView'
 
@@ -53,6 +53,16 @@ describe('recordPostView', () => {
 
   it('does not throw for a post that does not exist', async () => {
     await expect(recordPostView(999999)).resolves.toBeUndefined()
+  })
+
+  it('logs a failed write instead of throwing', async () => {
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    // Prisma rejects NaN as an id, which makes the write really fail.
+    await expect(recordPostView(Number.NaN)).resolves.toBeUndefined()
+    expect(log).toHaveBeenCalledOnce()
+
+    log.mockRestore()
   })
 
   it('does not lose simultaneous views', async () => {
