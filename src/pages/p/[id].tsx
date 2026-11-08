@@ -15,16 +15,24 @@ async function publish(id: number): Promise<void> {
 }
 
 async function archive(id: number): Promise<void> {
-  await fetch(`/api/archive/${id}`, {
+  const response = await fetch(`/api/archive/${id}`, {
     method: 'PUT',
   })
+  if (!response.ok) {
+    window.alert('Could not archive this post. Please try again.')
+    return
+  }
   await Router.push('/archived')
 }
 
 async function restore(id: number, published: boolean): Promise<void> {
-  await fetch(`/api/restore/${id}`, {
+  const response = await fetch(`/api/restore/${id}`, {
     method: 'PUT',
   })
+  if (!response.ok) {
+    window.alert('Could not restore this post. Please try again.')
+    return
+  }
   await Router.push(published ? '/' : '/drafts')
 }
 
@@ -85,6 +93,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     where: { id },
     include: { author: true },
   })
+  if (!post) {
+    return { notFound: true }
+  }
   return { props: { ...post } }
 }
 
