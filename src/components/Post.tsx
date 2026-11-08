@@ -1,6 +1,7 @@
 import React from 'react'
 import Router from 'next/router'
 import ReactMarkdown from 'react-markdown'
+import { formatDate } from '../lib/formatDate'
 import { formatViews } from '../lib/formatViews'
 import styles from '@/components/Post.module.css'
 
@@ -14,6 +15,7 @@ export type PostProps = {
   published: boolean
   archivedAt?: Date | null
   viewCount: number
+  createdAt: Date
 }
 
 const Post: React.FC<{ post: PostProps }> = ({ post }) => {
@@ -25,7 +27,7 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
     >
       <h2>{post.title}</h2>
       <small>
-        By {authorName}
+        By {authorName} · {formatDate(post.createdAt)}
         {post.published && ` · ${formatViews(post.viewCount)}`}
       </small>
       <ReactMarkdown>{post.content}</ReactMarkdown>

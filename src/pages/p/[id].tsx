@@ -5,6 +5,7 @@ import Layout from '../../components/Layout'
 import Router from 'next/router'
 import { PostProps } from '../../components/Post'
 import prisma from '../../lib/prisma'
+import { formatDate } from '../../lib/formatDate'
 import { formatViews } from '../../lib/formatViews'
 import { recordPostView } from '../../lib/recordPostView'
 import styles from '@/styles/Post.module.css'
@@ -59,7 +60,8 @@ const Post: React.FC<PostProps> = (props) => {
       <div>
         <h2>{title}</h2>
         <p>
-          By {props?.author?.name || 'Unknown author'}
+          By {props?.author?.name || 'Unknown author'} ·{' '}
+          {formatDate(props.createdAt)}
           {props.published && ` · ${formatViews(props.viewCount)}`}
         </p>
         <ReactMarkdown>{props.content}</ReactMarkdown>
