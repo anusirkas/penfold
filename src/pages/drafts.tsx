@@ -28,7 +28,7 @@ const Drafts: React.FC<Props> = (props) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const drafts = await prisma.post.findMany({
-    where: { published: false },
+    where: { published: false, archivedAt: null },
     include: { author: true },
   })
   return {

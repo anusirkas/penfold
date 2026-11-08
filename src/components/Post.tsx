@@ -11,6 +11,7 @@ export type PostProps = {
   }
   content: string
   published: boolean
+  archivedAt?: Date | null
 }
 
 const Post: React.FC<{ post: PostProps }> = ({ post }) => {

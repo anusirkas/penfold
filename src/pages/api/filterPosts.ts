@@ -9,6 +9,7 @@ export default async function handle(
   const { searchString } = req.query
   const resultPosts = await prisma.post.findMany({
     where: {
+      archivedAt: null,
       OR: [
         {
           title: {

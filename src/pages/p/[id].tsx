@@ -14,6 +14,20 @@ async function publish(id: number): Promise<void> {
   await Router.push('/')
 }
 
+async function archive(id: number): Promise<void> {
+  await fetch(`/api/archive/${id}`, {
+    method: 'PUT',
+  })
+  await Router.push('/archived')
+}
+
+async function restore(id: number, published: boolean): Promise<void> {
+  await fetch(`/api/restore/${id}`, {
+    method: 'PUT',
+  })
+  await Router.push(published ? '/' : '/drafts')
+}
+
 async function destroy(id: number): Promise<void> {
   await fetch(`/api/post/${id}`, {
     method: 'DELETE',
@@ -22,8 +36,11 @@ async function destroy(id: number): Promise<void> {
 }
 
 const Post: React.FC<PostProps> = (props) => {
+  const isArchived = Boolean(props.archivedAt)
   let title = props.title
-  if (!props.published) {
+  if (isArchived) {
+    title = `${title} (Archived)`
+  } else if (!props.published) {
     title = `${title} (Draft)`
   }
 
@@ -33,9 +50,21 @@ const Post: React.FC<PostProps> = (props) => {
         <h2>{title}</h2>
         <p>By {props?.author?.name || 'Unknown author'}</p>
         <ReactMarkdown>{props.content}</ReactMarkdown>
-        {!props.published && (
+        {!props.published && !isArchived && (
           <button className={styles.button} onClick={() => publish(props.id)}>
             Publish
+          </button>
+        )}
+        {isArchived ? (
+          <button
+            className={styles.button}
+            onClick={() => restore(props.id, props.published)}
+          >
+            Restore
+          </button>
+        ) : (
+          <button className={styles.button} onClick={() => archive(props.id)}>
+            Archive
           </button>
         )}
         <button className={styles.button} onClick={() => destroy(props.id)}>
